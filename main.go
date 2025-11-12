@@ -59,20 +59,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, key.NewBinding(key.WithKeys("q", "ctrl+c"))):
 			return m, tea.Quit
 		case key.Matches(msg, key.NewBinding(key.WithKeys("up", "k"))):
-			if m.cursor > 0 {
-				m.cursor--
+			if m.currentPage == 0 {
+				if m.cursor > 0 {
+					m.cursor--
+				}
 			}
 		case key.Matches(msg, key.NewBinding(key.WithKeys("down", "j"))):
-			if m.cursor < len(m.choices)-1 {
-				m.cursor++
+			if m.currentPage == 0 {
+				if m.cursor < len(m.choices)-1 {
+					m.cursor++
+				}
 			}
 		case key.Matches(msg, key.NewBinding(key.WithKeys("enter", " "))):
-			// Toggle selection on the current item
-			_, ok := m.selected[m.cursor]
-			if ok {
-				delete(m.selected, m.cursor)
-			} else {
-				m.selected[m.cursor] = struct{}{}
+			if m.currentPage == 0 {
+				// Toggle selection on the current item
+				_, ok := m.selected[m.cursor]
+				if ok {
+					delete(m.selected, m.cursor)
+				} else {
+					m.selected[m.cursor] = struct{}{}
+				}
 			}
 		case key.Matches(msg, key.NewBinding(key.WithKeys("right"))):
 			if m.currentPage < 2 {
