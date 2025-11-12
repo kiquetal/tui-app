@@ -47,56 +47,95 @@ The exercises are stored in a YAML file (e.g., `Process.md`). To import these ex
     }
     ```
 
-## 2. Evaluating Answers
+## 2. Intelligent Evaluation
 
-Once the exercises are loaded, the application will present the questions to the user one by one. For each question, the user will provide an answer. The evaluation process is as follows:
+To provide a more user-friendly and intelligent evaluation, we can implement a more sophisticated evaluation logic.
 
-1.  **Store user answers:** As the user answers each question, their answers should be stored in a data structure, for example, a map or a slice.
+### 2.1. Flexible Answer Matching
 
-2.  **Compare user answers with correct answers:** After the user has answered all the questions, the application will compare the user's answers with the correct answers from the `ExerciseData` struct. The comparison should be case-insensitive to avoid penalizing the user for capitalization differences.
+Instead of a strict string comparison, we can use a fuzzy string matching algorithm to tolerate minor typos. The **Levenshtein distance** is a good candidate for this. We can define a threshold for the distance, and if the user's answer is within that threshold, we can consider it correct or provide a hint.
 
-    ```go
-    import "strings"
+```go
+import "github.com/agext/levenshtein"
 
-    func checkAnswer(userAnswer, correctAnswer string) bool {
-        return strings.ToLower(userAnswer) == strings.ToLower(correctAnswer)
+func checkAnswer(userAnswer, correctAnswer string) (isCorrect bool, isPartial bool) {
+    userAnswer = strings.ToLower(strings.TrimSpace(userAnswer))
+    correctAnswer = strings.ToLower(strings.TrimSpace(correctAnswer))
+
+    if userAnswer == correctAnswer {
+        return true, false
     }
-    ```
 
-## 3. Generating a Final Report
+    distance := levenshtein.Distance(userAnswer, correctAnswer, nil)
+    if distance <= 2 { // Allow up to 2 typos
+        return false, true // Partially correct
+    }
 
-After evaluating all the answers, the application will generate a final report. The report should provide the user with feedback on their performance. The report should include:
+    return false, false
+}
+```
 
-1.  **Score:** The number of correct answers and the total number of questions (e.g., "You got 4 out of 6 correct").
+### 2.2. Providing Hints
 
-2.  **Detailed feedback:** For each question, the report should show the user's answer and the correct answer, especially for the questions they got wrong.
+If the user's answer is partially correct, the application can provide a hint. For example, if the correct answer is "plays" and the user enters "play", the app could say "Almost there! Check the verb conjugation."
 
-    **Example Report:**
+### 2.3. Confidence Score
 
-    ```
-    Your score: 4/6
+We can calculate a confidence score for each answer based on the Levenshtein distance. A lower distance means a higher confidence score.
 
-    ---
+-   **Distance 0:** Confidence 100% (Correct)
+-   **Distance 1-2:** Confidence 75% (Partially correct, typo)
+-   **Distance > 2:** Confidence 0% (Incorrect)
 
-    ### Detailed Report:
+## 3. Advanced Reporting
 
-    1. I ___ (to be) a student.
-       - Your answer: am (Correct)
+The final report should be more than just a score. It should be a learning tool that helps the user understand their mistakes.
 
-    2. She ___ (to have) a cat.
-       - Your answer: have (Incorrect)
-       - Correct answer: has
+### 3.1. Categorization of Errors
 
-    3. They ___ (to go) to school every day.
-       - Your answer: go (Correct)
+We can try to categorize the errors to give the user more specific feedback. For example:
 
-    4. He ___ (to play) football on weekends.
-       - Your answer: play (Incorrect)
-       - Correct answer: plays
+-   **Spelling Mistake:** If the answer is partially correct (Levenshtein distance <= 2).
+-   **Grammar Mistake:** If the answer is a valid word but not the correct one (e.g., "play" instead of "plays"). This would require a more advanced NLP (Natural Language Processing) approach, but for simple cases, we can have a predefined list of common mistakes.
 
-    5. We ___ (to study) English.
-       - Your answer: study (Correct)
+### 3.2. Detailed and Friendly Feedback
 
-    6. The sun ___ (to rise) in the east.
-       - Your answer: rises (Correct)
-    ```
+The report should be encouraging and provide clear explanations.
+
+**Example Report:**
+
+```
+Great effort! Here's your report:
+
+Your score: 4/6 (66%)
+
+---
+
+### Detailed Report:
+
+1. I ___ (to be) a student.
+   - Your answer: am (Correct)
+
+2. She ___ (to have) a cat.
+   - Your answer: have (Incorrect)
+   - Correct answer: has
+   - Tip: Remember to use 'has' for the third person singular (he, she, it).
+
+3. They ___ (to go) to school every day.
+   - Your answer: go (Correct)
+
+4. He ___ (to play) football on weekends.
+   - Your answer: play (Incorrect)
+   - Correct answer: plays
+   - Tip: For the present tense, we add an 's' to the verb for the third person singular.
+
+5. We ___ (to study) English.
+   - Your answer: study (Correct)
+
+6. The sun ___ (to rise) in the east.
+   - Your answer: rises (Correct)
+```
+
+### 3.3. Adaptive Learning (Future Improvement)
+
+Based on the user's performance, the application could suggest the next topic to study or repeat the current one. For example, if the user makes many mistakes with verb conjugations, the app could suggest a lesson on that topic.
