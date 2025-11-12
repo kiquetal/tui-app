@@ -5,28 +5,25 @@ A simple multi-window terminal application built with Go and the Bubble Tea libr
 ## ASCII Diagram
 
 ```
-╭───────────────────────────────────────╮
-│             TUI App Navigation        │
-├───────────────────────────────────────┤
-│  ╭───────────╮   ╭─────────╮          │
-│  │ Lip Gloss │──▶│ Glamour │          │
-│  ╰───────────╯   ╰─────────╯          │
-│        ▲               │              │
-│        │  (Tab Key)    │              │
-│        └───────────────┘              │
-│                                       │
-│  Current View: Lip Gloss (Checklist)  │
-│  ┌─────────────────────────────────┐  │
-│  │ > [x] Buy carrot                │  │
-│  │   [ ] Buy celery                │  │
-│  │   [ ] Buy kohlrabi              │  │
-│  └─────────────────────────────────┘  │
-╰───────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────╮
+│                   TUI App Navigation                      │
+├───────────────────────────────────────────────────────────┤
+│  ╭─────────╮   ╭─────────╮   ╭───────────╮                │
+│  │  List   │◀──▶│  Info   │◀──▶│  Results  │                │
+│  ╰─────────╯   ╰─────────╯   ╰───────────╯                │
+│                                                           │
+│  Current View: List (Checklist)                           │
+│  ┌─────────────────────────────────┐                      │
+│  │ > [ ] Buy carrot                │                      │
+│  │   [ ] Buy celery                │                      │
+│  │   [ ] Buy kohlrabi              │                      │
+│  └─────────────────────────────────┘                      │
+╰───────────────────────────────────────────────────────────╯
 ```
 
 ## Description
 
-This application demonstrates a basic multi-window layout in a terminal user interface. You can switch between the "Lip Gloss" and "Glamour" tabs using the `tab` key. The first tab contains a simple checklist, and the second tab displays a static message.
+This application demonstrates a basic multi-page layout in a terminal user interface. You can navigate between three pages: "List", "Info", and "Results" using the `left arrow` and `right arrow` keys. The "List" page contains a simple checklist, the "Info" page displays a static message, and the "Results" page shows the items selected from the checklist.
 
 ## Installation and Usage
 
@@ -45,8 +42,9 @@ This application demonstrates a basic multi-window layout in a terminal user int
 
 ## Controls
 
-*   `up`/`k`: Move the cursor up in the checklist.
-*   `down`/`j`: Move the cursor down in thechecklist.
-*   `enter`/`space`: Toggle an item in the checklist.
-*   `tab`: Switch between windows.
+*   `up`/`k`: Move the cursor up in the checklist (on the List page).
+*   `down`/`j`: Move the cursor down in the checklist (on the List page).
+*   `enter`/`space`: Toggle an item in the checklist (on the List page).
+*   `right arrow`: Navigate to the next page.
+*   `left arrow`: Navigate to the previous page.
 *   `q`/`ctrl+c`: Quit the application.
