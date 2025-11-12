@@ -5,25 +5,26 @@ A simple multi-window terminal application built with Go and the Bubble Tea libr
 ## ASCII Diagram
 
 ```
-╭───────────────────────────────────────────────────────────╮
-│                   TUI App Navigation                      │
-├───────────────────────────────────────────────────────────┤
-│  ╭─────────╮   ╭─────────╮   ╭───────────╮                │
-│  │  List   │◀──▶│  Info   │◀──▶│  Results  │                │
-│  ╰─────────╯   ╰─────────╯   ╰───────────╯                │
-│                                                           │
-│  Current View: List (Checklist)                           │
-│  ┌─────────────────────────────────┐                      │
-│  │ > [ ] Buy carrot                │                      │
-│  │   [ ] Buy celery                │                      │
-│  │   [ ] Buy kohlrabi              │                      │
-│  └─────────────────────────────────┘                      │
-╰───────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────────────────╮
+│                           TUI App Navigation                              │
+├───────────────────────────────────────────────────────────────────────────┤
+│  ╭─────────╮   ╭─────────╮   ╭───────────╮   ╭───────────╮                │
+│  │  List   │◀──▶│  Info   │◀──▶│  Results  │◀──▶│ Exercises │                │
+│  ╰─────────╯   ╰─────────╯   ╰───────────╯   ╰───────────╯                │
+│                                                                           │
+│  Current View: Exercises (Grammar: Present Tenses)                        │
+│  ┌───────────────────────────────────────────────────────┐                │
+│  │ 1. I ___ (to be) a student.                           │                │
+│  │    Your answer: [am] ✓                                │                │
+│  │ 2. She ___ (to have) a cat.                           │                │
+│  │    Your answer: [have] ~                              │                │
+│  └───────────────────────────────────────────────────────┘                │
+╰───────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Description
 
-This application demonstrates a basic multi-page layout in a terminal user interface. You can navigate between three pages: "List", "Info", and "Results" using the `left arrow` and `right arrow` keys. The "List" page contains a simple checklist, the "Info" page displays a static message, and the "Results" page shows the items selected from the checklist.
+This application demonstrates a basic multi-page layout in a terminal user interface. You can navigate between four pages: "List", "Info", "Results", and "Exercises" using the `left arrow` and `right arrow` keys. The "List" page contains a simple checklist, the "Info" page displays a static message, the "Results" page shows the items selected from the checklist, and the "Exercises" page presents interactive learning exercises from a YAML file.
 
 ## Installation and Usage
 
@@ -42,9 +43,10 @@ This application demonstrates a basic multi-page layout in a terminal user inter
 
 ## Controls
 
-*   `up`/`k`: Move the cursor up in the checklist (on the List page).
-*   `down`/`j`: Move the cursor down in the checklist (on the List page).
+*   `up`/`k`: Move the cursor up in the checklist (on the List page) or move between exercise input fields (on the Exercises page).
+*   `down`/`j`: Move the cursor down in the checklist (on the List page) or move between exercise input fields (on the Exercises page).
 *   `enter`/`space`: Toggle an item in the checklist (on the List page).
+*   `enter`: On the Exercises page, press Enter to submit answers and view results.
 *   `right arrow`: Navigate to the next page.
 *   `left arrow`: Navigate to the previous page.
 *   `q`/`ctrl+c`: Quit the application.
