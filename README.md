@@ -5,21 +5,23 @@ A simple multi-window terminal application built with Go and the Bubble Tea libr
 ## ASCII Diagram
 
 ```
-╭───────────╮╭─────────╮
-│ Lip Gloss ││ Glamour │
-╰───────────┴┴─────────╯
-┌───────────────────────────────────────────────────┐
-│                                                   │
-│ What should we buy at the market?                 │
-│                                                   │
-│ > [x] Buy carrot                                  │
-│   [ ] Buy celery                                  │
-│   [ ] Buy kohlrabi                                │
-│                                                   │
-│ Press q to quit.                                  │
-│                                                   │
-└───────────────────────────────────────────────────┘
-
+╭───────────────────────────────────────╮
+│             TUI App Navigation        │
+├───────────────────────────────────────┤
+│  ╭───────────╮   ╭─────────╮          │
+│  │ Lip Gloss │──▶│ Glamour │          │
+│  ╰───────────╯   ╰─────────╯          │
+│        ▲               │              │
+│        │  (Tab Key)    │              │
+│        └───────────────┘              │
+│                                       │
+│  Current View: Lip Gloss (Checklist)  │
+│  ┌─────────────────────────────────┐  │
+│  │ > [x] Buy carrot                │  │
+│  │   [ ] Buy celery                │  │
+│  │   [ ] Buy kohlrabi              │  │
+│  └─────────────────────────────────┘  │
+╰───────────────────────────────────────╯
 ```
 
 ## Description
